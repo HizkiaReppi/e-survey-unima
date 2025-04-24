@@ -2,20 +2,12 @@
 
 namespace App\Providers;
 
-use App\Models\Announcement;
 use App\Models\Category;
-use App\Models\HeadOfDepartment;
-use App\Models\Lecturer;
 use App\Models\Student;
-use App\Models\Submission;
 use App\Models\User;
-use App\Observers\AdministratorObserver;
-use App\Observers\AnnouncementObserver;
 use App\Observers\CategoryObserver;
-use App\Observers\HeadOfDepartmentObserver;
-use App\Observers\LecturerObserver;
 use App\Observers\StudentObserver;
-use App\Observers\SubmissionObserver;
+use App\Observers\UserObserver;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -37,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Category::observe(CategoryObserver::class);
         Student::observe(StudentObserver::class);
-        User::observe(AdministratorObserver::class);
+        User::observe(UserObserver::class);
 
         Gate::define('super-admin', function (User $user) {
             return $user->role === 'super-admin'

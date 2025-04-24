@@ -8,42 +8,6 @@
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <ul class="navbar-nav flex-row align-items-center ms-auto">
-            {{-- Notif --}}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow position-relative" href="javascript:void(0);" data-bs-toggle="dropdown">
-                    <i class="fa fa-bell"></i>
-                    @if ($submissionsCount > 0)
-                        <span class="translate-middle badge rounded-pill bg-danger" style="position:absolute;top:10px;right:-10px;font-size:9.5px;">
-                            {{ $submissionsCount }}
-                            <span class="visually-hidden">unread messages</span>
-                        </span>
-                    @endif
-
-                </a>
-                <div class="dropdown-menu dropdown-menu-end notif-dropdown" aria-labelledby="navbarDropdownNotif">
-                    <h5 class="dropdown-header">Notifikasi</h6>
-                        @forelse($submissions as $submission)
-                        @if(auth()->user()->role == 'student')
-                        <a class="dropdown-item inline-block {{ $loop->last ? '' : 'border-bottom' }}" style="font-size: 14px;white-space: normal;width:100%;"
-                                href="{{ route('dashboard.submission.student.detail', [$submission->category->slug, $submission->id]) }}">
-                                {{ 'Admin mengubah status pengajuan ' . $submission->category->name . ' anda menjadi ' . $submission->parseSubmissionStatus }}
-                                <small class="text-muted"
-                                    style="font-size: 10px">({{ $submission->updated_at->diffForHumans() }})</small>
-                            </a>
-                        @else
-                            <a class="dropdown-item inline-block {{ $loop->last ? '' : 'border-bottom' }}" style="font-size: 14px;white-space: normal;width:100%;"
-                                href="{{ route('dashboard.submission.show', $submission->id) }}">
-                                {{ $submission->student->fullname . ' ingin mengajukan ' . $submission->category->name }}
-                                <small class="text-muted"
-                                    style="font-size: 10px">({{ $submission->created_at->diffForHumans() }})</small>
-                            </a>
-                            @endif
-                        @empty
-                            <a class="dropdown-item text-center" href="#">Tidak ada notifikasi</a>
-                        @endforelse
-                </div>
-            </li>
-
             <!-- User -->
             <li class="ms-2 nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -78,15 +42,13 @@
                                 </div>
                                 <div class="flex-grow-1">
                                     <span class="fw-medium d-block">{{ auth()->user()->name }}</span>
-                                    @if (auth()->user()->role == 'lecturer')
-                                        <small class="text-muted">{{ auth()->user()->lecturer->nidn }}</small>
+                                    @if (auth()->user()->role == 'quality-assurance')
+                                        <small class="text-muted">{{ auth()->user()->username }}</small>
                                     @elseif (auth()->user()->role == 'student')
                                         <small class="text-muted">{{ auth()->user()->student->formattedNIM }}</small>
-                                    @elseif (auth()->user()->role == 'HoD')
-                                        <small class="text-muted">Ketua Jurusan</small>
                                     @else
                                         <small class="text-muted text-capitalize">{{ auth()->user()->role }}</small>
-                                    @endif
+                                    @endif 
                                 </div>
                             </div>
                         </div>

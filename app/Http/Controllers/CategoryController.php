@@ -18,7 +18,7 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
-        if (!Gate::allows('admin') && !Gate::allows('super-admin') && !Gate::allows('HoD')) {
+        if (!Gate::allows('admin') && !Gate::allows('super-admin')) {
             abort(403);
         }
     }

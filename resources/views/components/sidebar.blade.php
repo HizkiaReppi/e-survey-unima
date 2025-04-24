@@ -44,8 +44,8 @@
                     <div data-i18n="Mahasiswa">Mahasiswa</div>
                 </a>
             </li>
-            <li class="menu-item {{ request()->routeIs('dashboard.pimpinan-jurusan.*') ? 'active' : '' }}">
-                <a href="{{ route('dashboard.pimpinan-jurusan.index') }}" class="menu-link">
+            <li class="menu-item {{ request()->routeIs('dashboard.quality-assurance.*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.quality-assurance.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons fa-solid fa-user-graduate"></i>
                     <div data-i18n="Kajur">Tim Penjaminan Mutu</div>
                 </a>

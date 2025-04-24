@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QualityAssuranceController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/administrator', [AdminController::class, 'index'])->middleware('password.confirm')->name('dashboard.administrator.index');
     Route::resource('/administrator', AdminController::class)->names('dashboard.administrator')->except('index');
     Route::resource('/mahasiswa', StudentController::class)->names('dashboard.student');
-    Route::resource('/kelompok-penjaminan-mutu', StudentController::class)->names('dashboard.quality-assurance');
+    Route::resource('/kelompok-penjaminan-mutu', QualityAssuranceController::class)->names('dashboard.quality-assurance');
 
     Route::resource('/kategori', CategoryController::class)->names('dashboard.category');
 

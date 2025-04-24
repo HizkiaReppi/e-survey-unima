@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin'),
         ]);
 
+        $year = Carbon::now()->format('Y');
         for ($i = 1; $i <= 10; $i++) {
             $gender = rand(0, 1);
             $nim = substr($year, -2) . sprintf('%03d', $i);

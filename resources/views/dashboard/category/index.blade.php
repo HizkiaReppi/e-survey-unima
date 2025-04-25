@@ -14,9 +14,7 @@
                     <tr>
                         {{-- <th class="text-center">No</th> --}}
                         <th class="text-center">Nama</th>
-                        <th class="text-center">Persyaratan</th>
-                        <th class="text-center">Total <br> Surat</th>
-                        <th class="text-center">Surat <br> Selesai</th>
+                        <th class="text-center">Total <br> Pertanyaan</th>
                         <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -33,9 +31,7 @@
                 ajax: '{{ route('dashboard.category.index') }}',
                 columns: [
                     { data: 'name', name: 'name' },
-                    { data: 'requirements', name: 'requirements', className: 'text-center', orderable: false, searchable: false, },
                     { data: 'total', name: 'total', className: 'text-center', orderable: false, searchable: false, },
-                    { data: 'done', name: 'done', className: 'text-center', orderable: false, searchable: false, },
                     { data: 'action', name: 'action', orderable: false, searchable: false, className: 'text-center'}
                 ]
             });

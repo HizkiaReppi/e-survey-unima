@@ -33,39 +33,15 @@ class CategoryController extends Controller
         confirmDelete($title, $text);
 
         if ($request->ajax()) {
-            $model = Category::with(['requirements', 'submissions']);
+            $model = Category::with(['questions']);
 
             return DataTables::of($model)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
                     return $row->name;
                 })
-                ->addColumn('requirements', function ($row) {
-                    $content = null;
-                    if ($row->requirements->isEmpty()) {
-                        $content = '<p class="m-0 text-center">
-                                        Tidak Ada Persyaratan
-                                    </p>';
-                    } else {
-                        $content = '<ul class="mb-0">';
-
-                        foreach ($row->requirements as $requirement) {
-                            if ($requirement->file_path) {
-                                $content .= '<li><a href="' . $requirement->file_path . '" target="_blank">' . $requirement->name . '</a></li>';
-                            } else {
-                                $content .= '<li>' . $requirement->name . '</li>';
-                            }
-                        }
-
-                        $content .= '</ul>';
-                    }
-                    return $content;
-                })
                 ->addColumn('total', function ($row) {
-                    return $row->submissions->count();
-                })
-                ->addColumn('done', function ($row) {
-                    return $row->submissions->where('status', 'done')->count();
+                    return $row->questions->count();
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '
@@ -76,8 +52,8 @@ class CategoryController extends Controller
                             </button>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item"
-                                    href="' . route('dashboard.category.show', $row->slug) . '">
-                                    <i class="bx bxs-user-detail me-1"></i> Detail
+                                    href="' . route('dashboard.category.questions.show', $row->slug) . '">
+                                    <i class="bx bx-question-mark me-1"></i> Daftar Pertanyaan
                                 </a>
                                 <a class="dropdown-item"
                                     href="' . route('dashboard.category.edit', $row->slug) . '">
@@ -92,7 +68,7 @@ class CategoryController extends Controller
                         </div>';
                     return $btn;
                 })
-                ->rawColumns(['requirements', 'action'])
+                ->rawColumns(['action'])
                 ->make(true);
         }
 
@@ -148,78 +124,6 @@ class CategoryController extends Controller
             DB::rollBack();
             return redirect()->back()->withInput()->with('toast_error', 'Failed to add Kategori. Please try again.');
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Request $request, Category $kategori)
-    {
-        $title = 'Apakah anda yakin?';
-        $text = 'Anda tidak akan bisa mengembalikannya!';
-        confirmDelete($title, $text);
-
-        if ($request->ajax()) {
-            $model = Submission::where('category_id', $kategori->id)->with('student')->orderBy('created_at', 'desc');
-
-            return DataTables::of($model)
-                ->addIndexColumn()
-                ->addColumn('nim', function ($row) {
-                    return $row->student->formattedNIM;
-                })
-                ->addColumn('name', function ($row) {
-                    return $row->student->fullname;
-                })
-                ->addColumn('created_at', function ($row) {
-                    return $row->created_at->diffForHumans();
-                })
-                ->addColumn('updated_at', function ($row) {
-                    return $row->updated_at->diffForHumans();
-                })
-                ->addColumn('status', function ($row) {
-                    $content = '<span class="badge text-bg-' . $row->parseSubmissionBadgeClassNameStatus . '">
-                                ' . $row->parseSubmissionStatus . '
-                            </span>';
-                    return $content;
-                })
-                ->addColumn('action', function ($row) {
-                    $statuses = ['rejected', 'canceled', 'expired'];
-                    $isStatusInArray = in_array($row->status, $statuses);
-                    $isStatusDoneAndOld = $row->status == 'done' && $row->updated_at->lt(now()->subDays(7));
-
-                    $btn = null;
-                    if ($isStatusInArray || $isStatusDoneAndOld) {
-                        $btn = '<div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown">
-                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item"
-                                            href="' . route('dashboard.submission.show', $row->id) . '">
-                                            <i class="bx bxs-user-detail me-1"></i> Detail
-                                        </a>
-                                        <a class="dropdown-item"
-                                            href="' . route('dashboard.submission.destroy', $row->id) . '"
-                                            data-confirm-delete="true">
-                                            <i class="bx bx-trash me-1"></i> Delete
-                                        </a>
-                                    </div>
-                                </div>';
-                    } else {
-                        $btn = '<a class="dropdown-item"
-                                    href="' . route('dashboard.submission.show', $row->id) . '">
-                                    <i class="bx bxs-user-detail me-1"></i> Detail
-                                </a>';
-                    }
-                    return $btn;
-                })
-                ->rawColumns(['status', 'action'])
-                ->make(true);
-        }
-
-        return view('dashboard.category.show', compact('kategori'));
     }
 
     /**

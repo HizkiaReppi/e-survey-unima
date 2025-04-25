@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QualityAssuranceController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +27,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/mahasiswa', StudentController::class)->names('dashboard.student');
     Route::resource('/kelompok-penjaminan-mutu', QualityAssuranceController::class)->names('dashboard.quality-assurance');
 
-    Route::resource('/kategori', CategoryController::class)->names('dashboard.category');
+    Route::prefix('/kategori')->name('dashboard.category.')
+        ->controller(CategoryController::class)
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{category}', 'show')->name('show');
+            Route::get('/{category}/edit', 'edit')->name('edit');
+            Route::put('/{category}', 'update')->name('update');
+            Route::delete('/{category}', 'destroy')->name('destroy');
+            Route::get('/{category}/daftar-pertanyaan', [QuestionController::class, 'show'])->name('questions.show');
+            Route::get('/{category}/kelola-pertanyaan', [QuestionController::class, 'createOrEdit'])->name('questions.create-or-edit');
+            Route::post('/{category}/kelola-pertanyaan', [QuestionController::class, 'store'])->name('questions.store');
+        });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile/admin', [ProfileController::class, 'update_admin'])->name('profile.update.admin');

@@ -18,8 +18,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         User::factory()->create([
             'id' => Str::uuid(),
             'name' => env('SUPER_ADMIN_NAME'),
@@ -57,19 +55,6 @@ class DatabaseSeeder extends Seeder
                 'user_id' => $uuid,
                 'nim' => $nim,
                 'batch' => rand(2018, 2024),
-            ]);
-        }
-
-        $categories = [
-            'Kegiatan Awal Pembelajaran',
-            'Pelaksanaan Pembelajaran',
-            'Penilaian Hasil Belajar',
-        ];
-
-        foreach ($categories as $category) {
-            Category::create([
-                'name' => $category,
-                'slug' => Str::slug($category)
             ]);
         }
     }

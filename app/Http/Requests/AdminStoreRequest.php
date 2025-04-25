@@ -25,7 +25,7 @@ class AdminStoreRequest extends FormRequest
         $rules = [
             'fullname' => ['required', 'string', 'max:255', 'min:2', 'regex:/^[a-zA-Z\s]*$/'],
             'username' => ['required', 'string', 'max:255', 'min:2', 'unique:' . User::class, 'regex:/^[a-zA-Z][a-zA-Z0-9]*$/'],
-            'email' => ['required', 'string', 'email', 'max:255', 'min:4', 'unique:' . User::class],
+            'email' => ['required', 'string', 'email', 'max:255', 'min:4', 'unique:' . User::class, 'regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/'],
             'password' => ['required', 'string', 'confirmed', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/'],
             'foto' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:2048'],
         ];

@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Question extends Model
+class SurveyResponse extends Model
 {
     use HasFactory, HasUlids;
 
@@ -17,15 +16,15 @@ class Question extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['category_id', 'scale', 'question_text'];
+    protected $fillable = ['user_id', 'question_id', 'score'];
 
-    public function category(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function responses(): HasMany
+    public function question(): BelongsTo 
     {
-        return $this->hasMany(SurveyResponse::class);
+        return $this->belongsTo(Question::class);
     }
 }

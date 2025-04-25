@@ -35,6 +35,12 @@
                     <div data-i18n="Kategori">Kategori</div>
                 </a>
             </li>
+            <li class="menu-item {{ request()->routeIs('dashboard.survey.results.*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.survey.results.index') }}" class="menu-link">
+                    <i class="menu-icon bx bx-bar-chart-alt-2"></i>
+                    <div data-i18n="Kategori">Hasil Angket</div>
+                </a>
+            </li>
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text">Manajemen Pengguna</span>
             </li>

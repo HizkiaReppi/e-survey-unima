@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QualityAssuranceController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SurveyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -40,6 +41,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{category}/daftar-pertanyaan', [QuestionController::class, 'show'])->name('questions.show');
             Route::get('/{category}/kelola-pertanyaan', [QuestionController::class, 'createOrEdit'])->name('questions.create-or-edit');
             Route::post('/{category}/kelola-pertanyaan', [QuestionController::class, 'store'])->name('questions.store');
+        });
+
+    Route::prefix('/survey')->name('dashboard.survey.')
+        ->controller(SurveyController::class)
+        ->group(function () {
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/thankyou','thankyou')->name('thankyou');
+            Route::get('/results/admin', 'index')->name('results.index');
+            Route::get('results/details/{id}', 'show')->name('result.show');
+            Route::delete('results/admin/delete/{id}', 'delete')->name('result.destroy');
         });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

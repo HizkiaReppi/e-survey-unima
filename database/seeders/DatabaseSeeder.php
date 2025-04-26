@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Student;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Period;
 use Carbon\Carbon;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -57,5 +58,13 @@ class DatabaseSeeder extends Seeder
                 'batch' => rand(2018, 2024),
             ]);
         }
+
+        $period = Period::factory()->create([
+            'id' => 1,
+            'code' => '20232',
+            'name' => 'Genap 2023/2024',
+            'start_date' => '2024-2-5',
+            'end_date' => '2024-6-30',
+        ]);
     }
 }

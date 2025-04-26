@@ -52,6 +52,12 @@
                     <div data-i18n="Kategori">Hasil Angket</div>
                 </a>
             </li>
+            <li class="menu-item {{ request()->routeIs('dashboard.periode.*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.periode.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons fa-solid fa-calendar"></i>
+                    <div data-i18n="Manajemen Periode">Manajemen Periode</div>
+                </a>
+            </li>
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text">Manajemen Pengguna</span>
             </li>

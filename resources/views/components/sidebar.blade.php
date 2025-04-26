@@ -4,12 +4,23 @@
     if (auth()->user()->role == 'admin' || auth()->user()->role == 'super-admin') {
         $homeLink = route('dashboard');
     }
+
+    $baseUrl = config('app.url');
+
+    $baseUrl = explode('://', $baseUrl)[1];
+
+    if (request()->secure()) {
+        $baseUrl = 'https://' . $baseUrl;
+    } else {
+        $baseUrl = 'http://' . $baseUrl;
+    }
 @endphp
 
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
         <a href="{{ $homeLink }}" class="app-brand-link">
-            <span class="app-brand-text demo menu-text fw-bold ms-2 text-uppercase">E-Survey</span>
+            <img src="{{ $baseUrl }}/assets/images/logo-unima.png" class="img-fluid" style="width: 40px" />
+            <span class="app-brand-text demo menu-text fw-bold ms-2 text-uppercase">E-Survey Unima</span>
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">

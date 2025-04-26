@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Student;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Department;
 use App\Models\Faculty;
 use App\Models\Period;
 use Carbon\Carbon;
@@ -61,8 +62,15 @@ class DatabaseSeeder extends Seeder
         }
 
         $faculty = Faculty::factory()->create([
-            'id' => Str::uuid(),
+            'id' => Str::ulid(),
             'name' => 'Teknik',
+            'short_name' => 'FT',
+        ]);
+
+        $department = Department::factory()->create([
+            'id' => Str::ulid(),
+            'name' => 'Pendidikan Teknologi Informasi dan Komunikasi',
+            'faculty_id' => $faculty->id
         ]);
 
         $period = Period::factory()->create([

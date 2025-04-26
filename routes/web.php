@@ -4,6 +4,7 @@ use App\Helpers\PeriodHelper;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QualityAssuranceController;
@@ -39,6 +40,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         PeriodHelper::setCurrentPeriod($id);
         return response()->json(['message' => 'Period updated successfully']);
     })->name('update-period');
+    Route::resource('/fakultas', FacultyController::class)->names('dashboard.faculties')->except('create', 'edit');
     
     Route::prefix('/kategori')
     ->name('dashboard.category.')

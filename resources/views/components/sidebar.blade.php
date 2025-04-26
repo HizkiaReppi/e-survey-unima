@@ -61,6 +61,12 @@
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text">Manajemen Pengguna</span>
             </li>
+            <li class="menu-item {{ request()->routeIs('dashboard.faculties.*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.faculties.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons fa-solid fa-building"></i>
+                    <div data-i18n="Fakultas">Fakultas</div>
+                </a>
+            </li>
             <li class="menu-item {{ request()->routeIs('dashboard.student.*') ? 'active' : '' }}">
                 <a href="{{ route('dashboard.student.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons fa-solid fa-user"></i>

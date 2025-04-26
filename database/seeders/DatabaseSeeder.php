@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Student;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Faculty;
 use App\Models\Period;
 use Carbon\Carbon;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -58,6 +59,11 @@ class DatabaseSeeder extends Seeder
                 'batch' => rand(2018, 2024),
             ]);
         }
+
+        $faculty = Faculty::factory()->create([
+            'id' => Str::uuid(),
+            'name' => 'Teknik',
+        ]);
 
         $period = Period::factory()->create([
             'id' => 1,

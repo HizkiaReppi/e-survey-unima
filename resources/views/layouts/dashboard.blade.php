@@ -14,20 +14,22 @@
 @endphp
 
 <head>
-    <x-meta-data :title="$title" csrfToken="{{ csrf_token() }}" :baseurl="$baseUrl"/>
+    <x-meta-data :title="$title" csrfToken="{{ csrf_token() }}" :baseurl="$baseUrl" />
 
     <link rel="stylesheet" href="{{ $baseUrl }}/assets/vendor/fonts/boxicons.css">
     <link rel="stylesheet" href="{{ $baseUrl }}/assets/css/demo.css">
     <link rel="stylesheet" href="{{ $baseUrl }}/assets/css/app.css">
+    <link rel="stylesheet" href="{{ $baseUrl }}/assets/css/dataTables.dataTables.css">
+    <link rel="stylesheet" href="{{ $baseUrl }}/assets/css/select2.min.css">
+    <link rel="stylesheet" href="{{ $baseUrl }}/assets/css/select2-bootstrap-5-theme.min.css">
     <link rel="stylesheet" href="{{ $baseUrl }}/assets/vendor/css/core.css">
     <link rel="stylesheet" href="{{ $baseUrl }}/assets/vendor/css/theme-default.css">
     <link rel="stylesheet" href="{{ $baseUrl }}/assets/vendor/libs/trix/trix.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css">
     <script src="{{ $baseUrl }}/assets/vendor/libs/trix/trix.umd.min.js"></script>
     <script src="{{ $baseUrl }}/assets/vendor/js/helpers.js"></script>
     <script src="{{ $baseUrl }}/assets/js/config.js"></script>
+    <script src="{{ $baseUrl }}/assets/js/font-awesome-kit.js"></script>
     <script src="{{ $baseUrl }}/assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="https://kit.fontawesome.com/29057e6c17.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -114,7 +116,8 @@
         <div class="layout-overlay layout-menu-toggle"></div>
 
         <div id="btn-scroll-to-top-wrapper" class="d-none position-fixed" style="z-index: 1000;bottom:30px;right:30px">
-            <button id="btn-scroll-to-top" class="btn btn-primary btn-scroll-to-top" style="width: 40px;height: 40px" type="button">
+            <button id="btn-scroll-to-top" class="btn btn-primary btn-scroll-to-top" style="width: 40px;height: 40px"
+                type="button">
                 <i class="fas fa-arrow-up"></i>
             </button>
         </div>
@@ -128,7 +131,7 @@
         const btnScrollToTop = document.querySelector('#btn-scroll-to-top');
 
         window.addEventListener('scroll', () => {
-            if(window.scrollY > 125) {
+            if (window.scrollY > 125) {
                 btnScrollToTopWrapper.classList.remove('d-none');
             } else {
                 btnScrollToTopWrapper.classList.add('d-none');
@@ -150,7 +153,8 @@
     <script src="{{ $baseUrl }}/assets/vendor/libs/apex-charts/apexcharts.js"></script>
     <script src="{{ $baseUrl }}/assets/js/main.js"></script>
     <script src="{{ $baseUrl }}/assets/js/bootstrap.js"></script>
-    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+    <script src="{{ $baseUrl }}/assets/js/dataTables.js"></script>
+    <script src="{{ $baseUrl }}/assets/js/select2.full.min.js"></script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     @stack('scripts')

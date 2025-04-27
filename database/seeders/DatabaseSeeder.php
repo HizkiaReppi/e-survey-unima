@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Student;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Course;
 use App\Models\Department;
 use App\Models\Faculty;
 use App\Models\Period;
@@ -80,6 +81,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'Genap 2023/2024',
             'start_date' => '2024-2-5',
             'end_date' => '2024-6-30',
+        ]);
+
+        $course = Course::factory()->create([
+            'id' => 1,
+            'name' => 'Pemrograman Web',
+            'code' => '4263238MB',
+            'department_id' => $department->id,
+            'period_id' => $period->id
         ]);
     }
 }

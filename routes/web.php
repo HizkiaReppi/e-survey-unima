@@ -3,6 +3,7 @@
 use App\Helpers\PeriodHelper;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
@@ -45,6 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('update-period');
     Route::resource('/fakultas', FacultyController::class)->names('dashboard.faculties')->except('create', 'edit');
     Route::resource('/program-studi', DepartmentController::class)->names('dashboard.departments')->except('create', 'edit', 'show');
+    Route::resource('/mata-kuliah', CourseController::class)->names('dashboard.courses')->except('create', 'edit');
 
     Route::prefix('/kategori')
     ->name('dashboard.category.')

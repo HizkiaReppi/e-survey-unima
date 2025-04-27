@@ -58,6 +58,12 @@
                     <div data-i18n="Manajemen Periode">Manajemen Periode</div>
                 </a>
             </li>
+            <li class="menu-item {{ request()->routeIs('dashboard.courses.*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.courses.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons fa-solid fa-table-list"></i>
+                    <div data-i18n="Daftar Mata Kuliah">Daftar Mata Kuliah</div>
+                </a>
+            </li>
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text">Manajemen Fakultas</span>
             </li>

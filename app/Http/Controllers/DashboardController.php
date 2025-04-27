@@ -2,52 +2,50 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Lecturer;
+use App\Models\Course;
+use App\Models\Period;
+use App\Models\SurveyResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
 
 class DashboardController extends Controller
 {
-    public function index(): View
+    public function index()
     {
         if (!Gate::allows('admin') && !Gate::allows('super-admin')) {
             abort(403);
         }
 
-        return view('dashboard.index');
+        $lecturers = Lecturer::orderBy('fullname')->get();
+        $courses = Course::orderBy('name')->get();
+        $periods = Period::orderBy('name', 'desc')->get();
+
+        return view('dashboard.index', compact('lecturers', 'courses', 'periods'));
     }
 
-    public function surveyData(): JsonResponse
+    public function surveyChartData(Request $request)
     {
-        $respondents = DB::table('survey_responses')
-            ->select('user_id')
-            ->distinct()
-            ->count();
+        $query = SurveyResponse::select('lecturers.fullname as lecturer_name', DB::raw('ROUND(AVG(survey_responses.score),2) as avg_score'))->join('lecturers', 'survey_responses.lecturer_id', '=', 'lecturers.id');
 
-        $categories = Category::with('questions')->get();
-
-        $categoryData = [];
-
-        foreach ($categories as $category) {
-            $questionIds = $category->questions->pluck('id')->toArray();
-
-            $average = DB::table('survey_responses')
-                ->whereIn('question_id', $questionIds)
-                ->avg('score');
-
-            $categoryData[] = [
-                'category' => $category->name,
-                'average' => round($average, 2) ?? 0,
-            ];
+        // Dynamic filter
+        if ($request->filled('period_id')) {
+            $query->where('survey_responses.period_id', $request->period_id);
         }
 
+        if ($request->filled('lecturer_id')) {
+            $query->where('survey_responses.lecturer_id', $request->lecturer_id);
+        }
+
+        if ($request->filled('course_id')) {
+            $query->where('survey_responses.course_id', $request->course_id);
+        }
+
+        $data = $query->groupBy('survey_responses.lecturer_id', 'lecturers.fullname')->orderBy('avg_score', 'desc')->get();
+
         return response()->json([
-            'respondents' => $respondents,
-            'categories' => $categoryData,
+            'data' => $data,
         ]);
     }
 }

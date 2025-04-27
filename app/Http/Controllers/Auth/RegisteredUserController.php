@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Department;
 use App\Models\Lecturer;
 use App\Models\Student;
 use App\Models\User;
@@ -22,11 +23,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        $lecturers = Cache::rememberForever('lecturers_student', function () {
-            return Lecturer::all();
-        });
-        $concentrations = ['rpl', 'multimedia', 'tkj'];
-        return view('auth.register', compact('lecturers', 'concentrations'));
+        $departments = Department::all();
+        return view('auth.register', compact('departments'));
     }
 
     /**
@@ -41,6 +39,7 @@ class RegisteredUserController extends Controller
             'nim' => ['required', 'string', 'max:10', 'min:4', 'unique:' . Student::class, 'regex:/^[0-9]*$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'min:4', 'unique:' . User::class],
             'angkatan' => ['required', 'integer', 'digits:4', 'min:1900', 'max:' . (date('Y'))],
+            'department_id' => ['required', 'exists:' . Department::class . ',id'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ], [
             'fullname.regex' => 'The nim field must be alphabet.',
@@ -63,6 +62,7 @@ class RegisteredUserController extends Controller
             $student->user_id = $user->id;
             $student->nim = $validatedData['nim'];
             $student->batch = $validatedData['angkatan'];
+            $student->department_id = $validatedData['department_id'];
 
             $student->save();
 
@@ -70,7 +70,7 @@ class RegisteredUserController extends Controller
 
             Auth::login($user);
 
-            return redirect(route('dashboard.submission.student.index', absolute: false));
+            return redirect(route('dashboard.survey.create', absolute: false));
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->withInput()->with('toast_error', 'Failed to add Student. Please try again.');

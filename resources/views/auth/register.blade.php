@@ -56,6 +56,21 @@
                             autocomplete="year" required />
                         <x-input-error class="mt-2" :messages="$errors->get('angkatan')" />
                     </div>
+                    <div class="mb-3">
+                        <label for="department_id" class="form-label">Program Studi <span style="color:red">*</span></label>
+                        <select class="form-select {{ $errors->get('department_id') ? 'border-danger' : '' }}"
+                                id="department_id"
+                                name="department_id"
+                                required>
+                            <option value="">Pilih Program Studi</option>
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
+                                    {{ $department->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <x-input-error class="mt-2" :messages="$errors->get('department_id')" />
+                    </div>
                     <div class="mb-3 col-md-6 form-password-toggle">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group input-group-merge">

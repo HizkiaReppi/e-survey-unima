@@ -13,6 +13,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QualityAssuranceController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SurveyAnalyticsController;
 use App\Http\Controllers\SurveyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/survey-chart-data', [DashboardController::class, 'surveyChartData'])->name('dashboard.survey.chart-data');
     
+    Route::get('/dashboard/analytics/course-average', [SurveyAnalyticsController::class, 'courseAverage'])->name('dashboard.analytics.course-average');
+    Route::get('/dashboard/analytics/top-lecturers', [SurveyAnalyticsController::class, 'topLecturers'])->name('dashboard.analytics.top-lecturers');
+
     Route::get('/administrator', [AdminController::class, 'index'])
     ->middleware('password.confirm')
     ->name('dashboard.administrator.index');

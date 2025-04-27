@@ -38,6 +38,26 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-6 my-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Rata-rata Skor per Mata Kuliah</h5>
+                    <div id="courseAverageChart" style="height: 350px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 my-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Top 10 Dosen Terbaik</h5>
+                    <div id="topLecturersChart" style="height: 350px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <script>
@@ -139,8 +159,45 @@
             fetchChartData();
         });
 
+        async function loadChart(id, url, type = 'bar', horizontal = false) {
+            const response = await fetch(url);
+            const result = await response.json();
+
+            const categories = result.data.map(d => Object.values(d)[0]);
+            const scores = result.data.map(d => Object.values(d)[1]);
+
+            const options = {
+                chart: {
+                    type: type,
+                    height: 350
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: horizontal,
+                        borderRadius: 8,
+                    }
+                },
+                dataLabels: {
+                    enabled: true
+                },
+                xaxis: {
+                    categories: categories,
+                },
+                series: [{
+                    name: 'Rata-rata Skor',
+                    data: scores
+                }],
+                colors: ['#008FFB']
+            };
+
+            const chart = new ApexCharts(document.querySelector(id), options);
+            chart.render();
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             fetchChartData();
+            loadChart('#courseAverageChart', '{{ route('dashboard.analytics.course-average') }}', 'bar', true);
+            loadChart('#topLecturersChart', '{{ route('dashboard.analytics.top-lecturers') }}', 'bar', true);
         });
     </script>
 </x-dashboard-layout>

@@ -7,7 +7,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="card-header">Daftar Kelompok Penjaminan Mutu</h5>
             <a href="{{ route('dashboard.quality-assurance.create') }}" class="btn btn-primary me-4">Tambah
-                Administrator</a>
+                Pengguna</a>
         </div>
         <div class="table-responsive text-nowrap px-4 pb-4">
             <table class="table" id="table">

@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QualityAssuranceController;
@@ -35,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ->name('dashboard.administrator.index');
     Route::resource('/administrator', AdminController::class)->names('dashboard.administrator')->except('index');
     Route::resource('/mahasiswa', StudentController::class)->names('dashboard.student');
+    Route::resource('/dosen', LecturerController::class)->names('dashboard.lecturers');
     Route::resource('/kelompok-penjaminan-mutu', QualityAssuranceController::class)->names('dashboard.quality-assurance');
     Route::resource('/periode', PeriodController::class)->names('dashboard.periode');
     Route::post('/update-period/{id}', function (Request $request, $id) {

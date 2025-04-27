@@ -61,22 +61,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the lecturer record associated with the user.
-     */
-    public function lecturer(): HasOne
-    {
-        return $this->hasOne(Lecturer::class);
-    }
-
-    /**
-     * Get the head of departement record associated with the user.
-     */
-    public function headOfDepartment(): HasOne
-    {
-        return $this->hasOne(HeadOfDepartment::class);
-    }
-
-    /**
      * Get user photo.
      */
     public function getPhotoFileAttribute(): string

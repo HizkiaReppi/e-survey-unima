@@ -76,6 +76,12 @@
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text">Manajemen Pengguna</span>
             </li>
+            <li class="menu-item {{ request()->routeIs('dashboard.lecturer.*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.lecturers.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons fa-solid fa-chalkboard-user"></i>
+                    <div data-i18n="Dosen">Dosen</div>
+                </a>
+            </li>
             <li class="menu-item {{ request()->routeIs('dashboard.student.*') ? 'active' : '' }}">
                 <a href="{{ route('dashboard.student.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons fa-solid fa-user"></i>

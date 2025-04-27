@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StudentProfileUpdateRequest extends FormRequest
+class UpdateStudentProfileRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -18,10 +19,9 @@ class StudentProfileUpdateRequest extends FormRequest
         return [
             'fullname' => ['required', 'string', 'max:255', 'min:2', 'regex:/^[a-zA-Z\s]*$/'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-            'foto' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:2048'],
-            'no-hp' => ['nullable', 'string', 'min:9', 'max:20', 'regex:/^08[0-9]*$/'],
-            'konsentrasi' => ['required', 'string', 'in:rpl,multimedia,tkj'],
-            'alamat' => ['nullable', 'string', 'max:255'],
+            'photo' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:2048'],
+            'phone_number' => ['nullable', 'string', 'min:9', 'max:20', 'regex:/^08[0-9]*$/'],
+            'address' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

@@ -106,6 +106,19 @@
                     <div data-i18n="Admin">Admin</div>
                 </a>
             </li>
+        @elsecanany('student')
+            <li class="menu-item {{ request()->routeIs('dashboard.survey.*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.survey.create') }}" class="menu-link">
+                    <i class='menu-icon tf-icons bx bxs-pencil'></i>
+                    <div data-i18n="Survey">Survey</div>
+                </a>
+            </li>
+            <li class="menu-item {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                <a href="{{ route('profile.edit') }}" class="menu-link">
+                    <i class='menu-icon tf-icons bx bxs-user-pin'></i>
+                    <div data-i18n="Profil">Profil</div>
+                </a>
+            </li>
         @endcanany
     </ul>
 </aside>

@@ -8,6 +8,7 @@
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <ul class="navbar-nav flex-row align-items-center ms-auto">
+            @canany(['admin', 'super-admin'])
             <li class="nav-item dropdown me-2">
                 <select class="form-select form-select-sm" id="period-select">
                     @foreach ($periods as $period)
@@ -17,6 +18,7 @@
                     @endforeach
                 </select>
             </li>
+            @endcanany
             <!-- User -->
             <li class="ms-2 nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">

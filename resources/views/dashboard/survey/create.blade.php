@@ -1,7 +1,11 @@
 <x-dashboard-layout title="Survey Kepuasan Mahasiswa">
     <x-slot name="header">Form Survey Kepuasan</x-slot>
 
-    <div class="alert alert-info">
+    <div class="card p-4 mb-4">
+        <h1>Halo {{ auth()->user()->name }}!</h1>
+    </div>
+
+    <div class="card alert alert-info">
         <p>
             Silakan isi semua pertanyaan dengan jujur. Anda hanya dapat mengisi survey <strong>satu kali saja</strong>.
         </p>
@@ -25,11 +29,50 @@
         </ol>
     </div>
 
-    <div id="questionIndicator" class="mb-3 text-muted"></div>
-
-
     <form method="POST" action="{{ route('dashboard.survey.store') }}" id="surveyForm">
         @csrf
+
+        <div class="card p-4 mb-4">
+            <h5>Informasi Perkuliahan</h5>
+            <hr class="mb-3" style="margin-top: 0px;">
+
+            <div class="mb-3">
+                <label class="form-label">Pilih Dosen <span class="text-danger">*</span></label>
+                <select name="lecturer_id" id="lecturerSelect" class="form-select" required>
+                    <option value="">-- Pilih Dosen --</option>
+                    @foreach ($lecturers as $lecturer)
+                        <option value="{{ $lecturer->id }}" {{ old('lecturer_id') == $lecturer->id ? 'selected' : '' }}>
+                            {{ $lecturer->fullname }}
+                        </option>
+                    @endforeach
+                </select>
+                <x-input-error :messages="$errors->get('lecturer_id')" class="mt-2" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Pilih Mata Kuliah <span class="text-danger">*</span></label>
+                <select name="course_id" id="courseSelect" class="form-select" required>
+                    <option value="">-- Pilih Mata Kuliah --</option>
+                    @foreach ($courses as $course)
+                        <option value="{{ $course->id }}" data-credits="{{ $course->credits }}"
+                            {{ old('course_id') == $course->id ? 'selected' : '' }}>
+                            {{ $course->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <x-input-error :messages="$errors->get('course_id')" class="mt-2" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Jumlah SKS <span class="text-danger">*</span></label>
+                <input type="number" name="credits" id="creditsInput" class="form-control" min="1" max="6" placeholder="Jumlah SKS" value="{{ old('credits') }}"
+                 required>
+                <x-input-error :messages="$errors->get('credits')" class="mt-2" />
+            </div>
+        </div>
+
+        <div id="questionIndicator" class="mb-3 text-muted"></div>
+
 
         @foreach ($categories as $index => $category)
             <div class="card p-4 survey-category d-none" data-index="{{ $index }}">
@@ -46,7 +89,8 @@
                         @foreach ($scale as $value)
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="responses[{{ $question->id }}]"
-                                    id="q{{ $question->id }}-{{ $value }}" value="{{ $value }}" required>
+                                    id="q{{ $question->id }}-{{ $value }}" value="{{ $value }}"
+                                    required>
                                 <label class="form-check-label"
                                     for="q{{ $question->id }}-{{ $value }}">{{ $value }}</label>
                             </div>
@@ -65,6 +109,24 @@
 </x-dashboard-layout>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    $(document).ready(function() {        
+        $('#lecturerSelect').select2({
+            theme: 'bootstrap-5',
+            placeholder: "Pilih Dosen",
+            allowClear: true
+        });
+        
+        $('#courseSelect').select2({
+            theme: 'bootstrap-5',
+            placeholder: "Pilih Mata Kuliah",
+            allowClear: true
+        });
+    });
+</script>
+
+
 <script>
     const categories = document.querySelectorAll('.survey-category');
     const btnNext = document.getElementById('btnNext');
@@ -75,9 +137,11 @@
     const total = categories.length;
 
     function updateQuestionIndicator() {
-        const totalQuestions = [...categories].reduce((acc, category) => acc + category.querySelectorAll('input[type="radio"]').length, 0);
-        const answeredQuestions = [...categories].reduce((acc, category) => acc + category.querySelectorAll('input[type="radio"]:checked').length, 0);
-        
+        const totalQuestions = [...categories].reduce((acc, category) => acc + category.querySelectorAll(
+            'input[type="radio"]').length, 0);
+        const answeredQuestions = [...categories].reduce((acc, category) => acc + category.querySelectorAll(
+            'input[type="radio"]:checked').length, 0);
+
         questionIndicator.textContent = `Pertanyaan yang dijawab: ${answeredQuestions} dari ${totalQuestions}`;
     }
 

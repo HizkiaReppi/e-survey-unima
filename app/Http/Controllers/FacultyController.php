@@ -58,6 +58,8 @@ class FacultyController extends Controller
                         $row->id .
                         '" data-name="' .
                         $row->name .
+                        '" data-shortname="' .
+                        $row->short_name .
                         '">
                                             <i class="bx bx-edit-alt me-1"></i> Edit
                                         </button>

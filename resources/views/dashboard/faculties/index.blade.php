@@ -35,12 +35,22 @@
                 <div class="modal-body">
                     <form id="tambah-fakultas" method="post" action="{{ route('dashboard.faculties.store') }}">
                         @csrf
-                        <label class="form-label" for="fullname">Nama Fakultas <span
+                        <div>
+                            <label class="form-label" for="fullname">Nama Fakultas <span
                                 style="font-size:14px;color:red">*</span></label>
-                        <input type="text" class="form-control {{ $errors->get('fullname') ? 'border-danger' : '' }}"
-                            id="fullname" name="fullname" placeholder="Nama Fakultas" value="{{ old('fullname') }}"
-                            autocomplete="name" autofocus required />
-                        <x-input-error class="mt-2" :messages="$errors->get('fullname')" />
+                            <input type="text" class="form-control {{ $errors->get('fullname') ? 'border-danger' : '' }}"
+                                id="fullname" name="fullname" placeholder="Nama Fakultas" value="{{ old('fullname') }}"
+                                autocomplete="name" autofocus required />
+                            <x-input-error class="mt-2" :messages="$errors->get('fullname')" />
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="form-label" for="shortname">Singkatan <span
+                                style="font-size:14px;color:red">*</span></label>
+                            <input type="text" class="form-control {{ $errors->get('shortname') ? 'border-danger' : '' }}"
+                                id="shortname" name="shortname" placeholder="Singkatan" value="{{ old('shortname') }}"
+                                autocomplete="name" autofocus required />
+                            <x-input-error class="mt-2" :messages="$errors->get('shortname')" />
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -64,10 +74,18 @@
                     <form id="edit-fakultas" method="post" action="">
                         @csrf
                         @method('put')
-                        <label class="form-label" for="edit-fullname">Nama Fakultas <span
+                        <div>
+                            <label class="form-label" for="edit-fullname">Nama Fakultas <span
                                 style="font-size:14px;color:red">*</span></label>
-                        <input type="text" class="form-control" id="edit-fullname" name="fullname"
-                            placeholder="Nama Fakultas" required />
+                            <input type="text" class="form-control" id="edit-fullname" name="fullname"
+                                placeholder="Nama Fakultas" required />
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="form-label" for="edit-shortname">Singkatan <span
+                                style="font-size:14px;color:red">*</span></label>
+                            <input type="text" class="form-control" id="edit-shortname" name="shortname"
+                                placeholder="Singkatan" required />
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -110,9 +128,11 @@
             $('#table-fakultas').on('click', '.btn-edit', function() {
                 const id = $(this).data('id');
                 const name = $(this).data('name');
+                const shortname = $(this).data('shortname');
 
                 $('#edit-id').val(id);
                 $('#edit-fullname').val(name);
+                $('#edit-shortname').val(shortname);
 
                 let formAction = "{{ route('dashboard.faculties.update', ':id') }}";
                 formAction = formAction.replace(':id', id);

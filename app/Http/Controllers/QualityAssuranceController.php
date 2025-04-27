@@ -61,6 +61,7 @@ class QualityAssuranceController extends Controller
             $user->email = $validatedData['email'];
             $user->password = Hash::make($validatedData['password']);
             $user->role = 'quality-assurance';
+            $user->email_verified_at = now();
 
             if ($request->hasFile('foto')) {
                 $file = $request->file('foto');

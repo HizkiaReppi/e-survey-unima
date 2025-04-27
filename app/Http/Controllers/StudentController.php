@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StudentStoreRequest;
-use App\Http\Requests\StudentUpdateRequest;
+use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
+use App\Models\Department;
 use App\Models\Student;
 use App\Models\User;
-use App\Models\Lecturer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -36,7 +36,7 @@ class StudentController extends Controller
         confirmDelete($title, $text);
 
         if ($request->ajax()) {
-            $model = Student::with('user', 'firstSupervisor', 'secondSupervisor', 'firstSupervisor.user', 'secondSupervisor.user');
+            $model = Student::with(['user', 'department']);
 
             return DataTables::of($model)
                 ->addIndexColumn()
@@ -46,14 +46,11 @@ class StudentController extends Controller
                 ->addColumn('nim', function ($row) {
                     return $row->formattedNIM;
                 })
-                ->addColumn('Dosen Pembimbing I', function ($row) {
-                    return $row->firstSupervisorFullname;
-                })
-                ->addColumn('Dosen Pembimbing II', function ($row) {
-                    return $row->secondSupervisorFullname;
-                })
-                ->addColumn('Angkatan', function ($row) {
+                ->addColumn('batch', function ($row) {
                     return $row->batch;
+                })
+                ->addColumn('department', function ($row) {
+                    return $row->department->name;
                 })
                 ->addColumn('action', function ($row) {
                     $btn =
@@ -65,19 +62,19 @@ class StudentController extends Controller
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
                                             href="' .
-                        route('dashboard.student.show', $row->id) .
+                        route('dashboard.students.show', $row->id) .
                         '">
                                             <i class="bx bxs-user-detail me-1"></i> Detail
                                         </a>
                                         <a class="dropdown-item"
                                             href="' .
-                        route('dashboard.student.edit', $row->id) .
+                        route('dashboard.students.edit', $row->id) .
                         '">
                                             <i class="bx bx-edit-alt me-1"></i> Edit
                                         </a>
                                         <a class="dropdown-item"
                                             href="' .
-                        route('dashboard.student.destroy', $row->id) .
+                        route('dashboard.students.destroy', $row->id) .
                         '"
                                             data-confirm-delete="true">
                                             <i class="bx bx-trash me-1"></i> Delete
@@ -89,7 +86,7 @@ class StudentController extends Controller
                 ->make(true);
         }
 
-        return view('dashboard.student.index');
+        return view('dashboard.students.index');
     }
 
     /**
@@ -97,17 +94,14 @@ class StudentController extends Controller
      */
     public function create(): View
     {
-        $lecturers = Cache::rememberForever('lecturers_student', function () {
-            return Lecturer::all();
-        });
-        $concentrations = ['rpl', 'multimedia', 'tkj'];
-        return view('dashboard.student.create', compact('lecturers', 'concentrations'));
+        $departments =  Department::all();
+        return view('dashboard.students.create', compact('departments'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StudentStoreRequest $request): RedirectResponse
+    public function store(StoreStudentRequest $request): RedirectResponse
     {
         $validatedData = $request->validated();
 
@@ -121,8 +115,8 @@ class StudentController extends Controller
             $user->password = Hash::make($validatedData['nim']);
             $user->role = 'student';
 
-            if ($request->hasFile('foto')) {
-                $file = $request->file('foto');
+            if ($request->hasFile('photo')) {
+                $file = $request->file('photo');
                 $fileName = time() . '_mahasiswa_' . $user->username . '.' . $file->getClientOriginalExtension();
 
                 $file->storeAs('public/images/profile-photo', $fileName);
@@ -134,18 +128,16 @@ class StudentController extends Controller
 
             $student = new Student();
             $student->user_id = $user->id;
-            $student->lecturer_id_1 = $validatedData['lecturer_id_1'];
-            $student->lecturer_id_2 = $validatedData['lecturer_id_2'] !== 'choose' ? $validatedData['lecturer_id_2'] : null;
+            $student->department_id = $validatedData['department_id'];
             $student->nim = $validatedData['nim'];
-            $student->batch = $validatedData['angkatan'];
-            $student->concentration = $validatedData['konsentrasi'];
-            $student->phone_number = $validatedData['no-hp'];
-            $student->address = $validatedData['alamat'];
+            $student->batch = $validatedData['batch'];
+            $student->phone_number = $validatedData['phone_number'];
+            $student->address = $validatedData['address'];
 
             $student->save();
 
             DB::commit();
-            return redirect()->route('dashboard.student.index')->with('toast_success', 'Student added successfully');
+            return redirect()->route('dashboard.students.index')->with('toast_success', 'Student added successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->withInput()->with('toast_error', 'Failed to add Student. Please try again.');
@@ -161,9 +153,9 @@ class StudentController extends Controller
         $text = 'Anda tidak akan bisa mengembalikannya!';
         confirmDelete($title, $text);
 
-        $mahasiswa->load('user', 'firstSupervisor', 'secondSupervisor', 'firstSupervisor.user', 'secondSupervisor.user');
+        $mahasiswa->load(['user', 'department']);
 
-        return view('dashboard.student.show', compact('mahasiswa'));
+        return view('dashboard.students.show', compact('mahasiswa'));
     }
 
     /**
@@ -171,15 +163,15 @@ class StudentController extends Controller
      */
     public function edit(Student $mahasiswa): View
     {
-        $lecturers = Lecturer::with('user')->get();
-        $concentrations = ['rpl', 'multimedia', 'tkj'];
-        return view('dashboard.student.edit', compact('mahasiswa', 'lecturers', 'concentrations'));
+        $departments = Department::all();
+        $mahasiswa->load(['user', 'department']);
+        return view('dashboard.students.edit', compact('mahasiswa', 'departments'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StudentUpdateRequest $request, Student $mahasiswa): RedirectResponse
+    public function update(UpdateStudentRequest $request, Student $mahasiswa): RedirectResponse
     {
         $validatedData = $request->validated();
 
@@ -196,13 +188,13 @@ class StudentController extends Controller
                 $mahasiswa->user->email = $validatedData['email'];
             }
 
-            if ($request->hasFile('foto')) {
+            if ($request->hasFile('photo')) {
                 $oldImagePath = 'public/images/profile-photo/' . $mahasiswa->user->photo;
                 if (Storage::exists($oldImagePath)) {
                     Storage::delete($oldImagePath);
                 }
 
-                $file = $request->file('foto');
+                $file = $request->file('photo');
                 $fileName = time() . '_mahasiswa_' . $mahasiswa->user->username . '.' . $file->getClientOriginalExtension();
 
                 $file->storeAs('public/images/profile-photo', $fileName);
@@ -213,17 +205,14 @@ class StudentController extends Controller
             $mahasiswa->user->name = $validatedData['fullname'];
             $mahasiswa->user->save();
 
-            $mahasiswa->lecturer_id_1 = $validatedData['lecturer_id_1'];
-            $mahasiswa->lecturer_id_2 = $validatedData['lecturer_id_2'] !== 'choose' ? $validatedData['lecturer_id_2'] : null;
-            $mahasiswa->batch = $validatedData['angkatan'];
-            $mahasiswa->concentration = $validatedData['konsentrasi'];
-            $mahasiswa->phone_number = $validatedData['no-hp'];
-            $mahasiswa->address = $validatedData['alamat'];
+            $mahasiswa->batch = $validatedData['batch'];
+            $mahasiswa->phone_number = $validatedData['phone_number'];
+            $mahasiswa->address = $validatedData['address'];
 
             $mahasiswa->save();
 
             DB::commit();
-            return redirect()->route('dashboard.student.index')->with('toast_success', 'Student updated successfully');
+            return redirect()->route('dashboard.students.index')->with('toast_success', 'Student updated successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->withInput()->with('toast_error', 'Failed to update Student. Please try again.');
@@ -244,12 +233,12 @@ class StudentController extends Controller
             DB::commit();
 
             // delete foto
-            $oldImagePath = 'public/images/profile-photo/' . $mahasiswa->user->foto;
+            $oldImagePath = 'public/images/profile-photo/' . $mahasiswa->user->photo;
             if (Storage::exists($oldImagePath)) {
                 Storage::delete($oldImagePath);
             }
 
-            return redirect()->route('dashboard.student.index')->with('toast_success', 'Student deleted successfully');
+            return redirect()->route('dashboard.students.index')->with('toast_success', 'Student deleted successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('toast_error', 'Failed to delete Student. Please try again.');

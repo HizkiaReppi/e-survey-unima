@@ -27,24 +27,16 @@
                     <p class="border p-2 rounded m-0">{{ $mahasiswa->formattedNIM }}</p>
                 </div>
                 <div class="mb-3 col-md-6">
-                    <label for="judu-skripsi" class="form-label">Semester</label>
+                    <label for="semester" class="form-label">Semester</label>
                     <p class="border p-2 rounded m-0">{{ $mahasiswa->currentSemester }}</p>
                 </div>
                 <div class="mb-3 col-md-6">
-                    <label for="angkatan" class="form-label">Angkatan</label>
+                    <label for="batch" class="form-label">Angkatan</label>
                     <p class="border p-2 rounded m-0">{{ $mahasiswa->batch }}</p>
                 </div>
                 <div class="mb-3 col-md-6">
-                    <label for="konsentrasi" class="form-label">Konsentrasi</label>
-                    <p class="border p-2 rounded m-0">{{ $mahasiswa->concentration }}</p>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <label for="dosen-pembimbing-1" class="form-label">Dosen Pembimbing I</label>
-                    <p class="border p-2 rounded m-0">{{ $mahasiswa->firstSupervisorFullname }}</p>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <label for="dosen-pembimbing-2" class="form-label">Dosen Pembimbing II</label>
-                    <p class="border p-2 rounded m-0">{{ $mahasiswa->secondSupervisorFullname }}</p>
+                    <label for="department" class="form-label">Program Studi</label>
+                    <p class="border p-2 rounded m-0">{{ $mahasiswa->department->name }}</p>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="email" class="form-label">Email</label>
@@ -81,10 +73,10 @@
             </div>
         </div>
         <div class="d-flex mb-4 ms-3" style="margin-top: -15px">
-            <a href="{{ route('dashboard.student.edit', $mahasiswa->id) }}" class="btn btn-primary ms-2">Edit Data</a>
-            <a href="{{ route('dashboard.student.destroy', $mahasiswa->id) }}" class="btn btn-danger ms-2"
+            <a href="{{ route('dashboard.students.edit', $mahasiswa->id) }}" class="btn btn-primary ms-2">Edit Data</a>
+            <a href="{{ route('dashboard.students.destroy', $mahasiswa->id) }}" class="btn btn-danger ms-2"
                 data-confirm-delete="true">Hapus Data</a>
-            <a href="{{ route('dashboard.student.index') }}" class="btn btn-outline-secondary ms-2">Kembali</a>
+            <a href="{{ route('dashboard.students.index') }}" class="btn btn-outline-secondary ms-2">Kembali</a>
         </div>
     </div>
 </x-dashboard-layout>

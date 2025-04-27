@@ -35,7 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ->middleware('password.confirm')
     ->name('dashboard.administrator.index');
     Route::resource('/administrator', AdminController::class)->names('dashboard.administrator')->except('index');
-    Route::resource('/mahasiswa', StudentController::class)->names('dashboard.student');
+    Route::resource('/mahasiswa', StudentController::class)->names('dashboard.students');
     Route::resource('/dosen', LecturerController::class)->names('dashboard.lecturers');
     Route::resource('/kelompok-penjaminan-mutu', QualityAssuranceController::class)->names('dashboard.quality-assurance');
     Route::resource('/periode', PeriodController::class)->names('dashboard.periode');

@@ -18,7 +18,7 @@ class Student extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['user_id', 'lecturer_id', 'nim', 'batch', 'concentration', 'phone_number', 'address', 'photo'];
+    protected $fillable = ['user_id', 'nim', 'batch', 'phone_number', 'address', 'department_id'];
 
     /**
      * Get the user that owns the student.
@@ -29,43 +29,11 @@ class Student extends Model
     }
 
     /**
-     * Get the dosen pembimbing 1 for the student.
+     * Get the department that owns the student.
      */
-    public function firstSupervisor(): BelongsTo
+    public function department(): BelongsTo
     {
-        return $this->belongsTo(Lecturer::class, 'lecturer_id_1');
-    }
-
-    /**
-     * Get the dosen pembimbing 2 for the student.
-     */
-    public function secondSupervisor(): BelongsTo
-    {
-        return $this->belongsTo(Lecturer::class, 'lecturer_id_2');
-    }
-
-    /**
-     * Get the fullname of the dosen pembimbing 1.
-     */
-    public function getFirstSupervisorFullnameAttribute(): string
-    {
-        if ($this->firstSupervisor) {
-            return $this->firstSupervisor->front_degree . ' ' . $this->firstSupervisor->user->name . ' ' . $this->firstSupervisor->back_degree;
-        }
-
-        return 'Mahasiswa Belum Memiliki Dosen Pembimbing 1';
-    }
-
-    /**
-     * Get the fullname of the dosen pembimbing 2.
-     */
-    public function getSecondSupervisorFullnameAttribute(): string
-    {
-        if ($this->secondSupervisor) {
-            return $this->secondSupervisor->front_degree . ' ' . $this->secondSupervisor->user->name . ' ' . $this->secondSupervisor->back_degree;
-        }
-
-        return 'Mahasiswa Belum Memiliki Dosen Pembimbing 2';
+        return $this->belongsTo(Department::class);
     }
 
     /**

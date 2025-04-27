@@ -83,7 +83,7 @@
                 </a>
             </li>
             <li class="menu-item {{ request()->routeIs('dashboard.student.*') ? 'active' : '' }}">
-                <a href="{{ route('dashboard.student.index') }}" class="menu-link">
+                <a href="{{ route('dashboard.students.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons fa-solid fa-user"></i>
                     <div data-i18n="Mahasiswa">Mahasiswa</div>
                 </a>

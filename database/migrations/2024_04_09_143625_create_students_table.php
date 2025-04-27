@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('batch');
             $table->string('phone_number', 20)->nullable()->default(null);
             $table->string('address')->nullable()->default(null);
+            $table->foreignUlid('department_id')->constrained('departments')->cascadeOnDelete();
             $table->timestamps();
         });
     }

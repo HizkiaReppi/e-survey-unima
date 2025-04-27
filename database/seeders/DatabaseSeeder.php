@@ -39,6 +39,18 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin'),
         ]);
 
+        $faculty = Faculty::factory()->create([
+            'id' => Str::ulid(),
+            'name' => 'Teknik',
+            'short_name' => 'FT',
+        ]);
+
+        $department = Department::factory()->create([
+            'id' => Str::ulid(),
+            'name' => 'Pendidikan Teknologi Informasi dan Komunikasi',
+            'faculty_id' => $faculty->id
+        ]);
+
         $year = Carbon::now()->format('Y');
         for ($i = 1; $i <= 10; $i++) {
             $gender = rand(0, 1);
@@ -58,20 +70,9 @@ class DatabaseSeeder extends Seeder
                 'user_id' => $uuid,
                 'nim' => $nim,
                 'batch' => rand(2018, 2024),
+                'department_id' => $department->id,
             ]);
         }
-
-        $faculty = Faculty::factory()->create([
-            'id' => Str::ulid(),
-            'name' => 'Teknik',
-            'short_name' => 'FT',
-        ]);
-
-        $department = Department::factory()->create([
-            'id' => Str::ulid(),
-            'name' => 'Pendidikan Teknologi Informasi dan Komunikasi',
-            'faculty_id' => $faculty->id
-        ]);
 
         $period = Period::factory()->create([
             'id' => 1,

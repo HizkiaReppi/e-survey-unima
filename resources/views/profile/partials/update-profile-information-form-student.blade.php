@@ -25,7 +25,7 @@
                     <p class="border p-2 rounded m-0">{{ $user->formattedNIM }}</p>
                 </div>
                 <div class="mb-3 col-md-6">
-                    <label for="email" class="form-label">E-mail</label>
+                    <label for="email" class="form-label">Email</label>
                     <input class="form-control" type="email" id="email" name="email"
                         value="{{ old('email', $user->user->email) }}" placeholder="Email" required />
 
@@ -48,44 +48,29 @@
                     @endif
                 </div>
                 <div class="mb-3 col-md-6">
-                    <label class="form-label" for="no-hp">Nomor HP</label>
-                    <input type="number" id="no-hp" name="no-hp" class="form-control" placeholder="Nomor HP" value="{{ old('no-hp', $user->phone_number) }}" />
+                    <label class="form-label" for="phone_number">Nomor HP</label>
+                    <input type="number" id="phone_number" name="phone_number" class="form-control" placeholder="Nomor HP" value="{{ old('phone_number', $user->phone_number) }}" />
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="angkatan" class="form-label">Angkatan</label>
                     <p class="border p-2 rounded m-0">{{ $user->batch }}</p>
                 </div>
-                <div class="mb-3 col-md-6">
-                    <label for="konsentrasi" class="form-label">Konsentrasi</label>
-                    <select class="form-select {{ $errors->get('konsentrasi') ? 'border-danger' : '' }}"
-                        id="konsentrasi" name="konsentrasi" aria-label="Konsentrasi" required>
-                        @foreach ($concentrations as $concentration)
-                            @if (old('konsentrasi', strtolower($user->concentration)) == $concentration)
-                                <option value="{{ $concentration }}" selected>{{ strtoupper($concentration) }}
-                                </option>
-                            @else
-                                <option value="{{ $concentration }}">{{ strtoupper($concentration) }}</option>
-                            @endif
-                        @endforeach
-                    </select>
-                    <x-input-error class="mt-2" :messages="$errors->get('konsentrasi')" />
+                <div class="mb-3">
+                    <label for="address" class="form-label">Alamat</label>
+                    <textarea class="form-control" name="address" id="address" placeholder="Alamat"
+                        value="{{ old('address', $user->address) }}" rows="2">{{ old('address', $user->address) }}</textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="alamat" class="form-label">Alamat</label>
-                    <textarea class="form-control" name="alamat" id="alamat" placeholder="Alamat"
-                        value="{{ old('alamat', $user->address) }}" rows="2">{{ old('alamat', $user->address) }}</textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="foto" class="form-label">Foto</label>
+                    <label for="photo" class="form-label">Foto</label>
                     @if ($user->user->photo)
                         <img src="/{{ $user->user->photoFile }}" alt="{{ $user->fullname }}"
                             class="img-preview img-thumbnail rounded mb-2" style="width: 300px; height: auto;">
                     @else
                         <img class="img-preview img-thumbnail rounded" style="width: 300px; height: auto;">
                     @endif
-                    <input class="form-control" type="file" id="foto" name="foto"
+                    <input class="form-control" type="file" id="photo" name="photo"
                         accept=".png, .jpg, .jpeg" />
-                    <x-input-error class="mt-2" :messages="$errors->get('foto')" />
+                    <x-input-error class="mt-2" :messages="$errors->get('photo')" />
                     <div id="form-help" class="form-text">
                         <small>PNG, JPG atau JPEG (Max. 2 MB).</small>
                     </div>

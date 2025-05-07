@@ -11,7 +11,21 @@ class Period extends Model
 
     protected $fillable = [
         'name',
+        'code',
         'start_date',
         'end_date',
+        'status',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'status' => 'string',
+        ];
+    }
 }

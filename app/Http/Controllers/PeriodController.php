@@ -45,6 +45,12 @@ class PeriodController extends Controller
                     $parseEndDate = date('d F Y', strtotime($row->end_date));
                     return $parseEndDate;
                 })
+                ->addColumn('status', function ($row) {
+                    $badge = $row->status === 'active'
+                        ? '<span class="badge bg-success">Aktif</span>'
+                        : '<span class="badge bg-secondary">Tidak Aktif</span>';
+                    return $badge;
+                })
                 ->addColumn('action', function ($row) {
                     $btn =
                         '<div class="dropdown">
@@ -62,6 +68,8 @@ class PeriodController extends Controller
                         $row->code .
                         '" data-start="' .
                         $row->start_date . 
+                        '" data-status="' . 
+                        $row->status  .
                         '" data-end="' . 
                         $row->end_date . 
                         '">
@@ -78,6 +86,7 @@ class PeriodController extends Controller
                                 </div>';
                     return $btn;
                 })
+                ->rawColumns(['action', 'status'])
                 ->make(true);
         }
 
@@ -94,6 +103,7 @@ class PeriodController extends Controller
             'code' => ['required', 'string', 'max:50', 'min:2', 'unique:' . Period::class],
             'start_date' => ['required', 'date', 'before:end_date'],
             'end_date' => ['required', 'date', 'after:start_date'],
+            'status' => ['required', 'in:active,inactive'],
         ]);
 
         DB::beginTransaction();
@@ -104,6 +114,11 @@ class PeriodController extends Controller
             $period->name = $validatedData['name'];
             $period->start_date = $validatedData['start_date'];
             $period->end_date = $validatedData['end_date'];
+            $period->status = $validatedData['status'];
+
+            if ($validatedData['status'] === 'active') {
+                Period::where('status', 'active')->update(['status' => 'inactive']);
+            }
 
             $period->save();
             DB::commit();
@@ -123,6 +138,7 @@ class PeriodController extends Controller
             'name' => ['required', 'string', 'max:255', 'min:2'],
             'start_date' => ['required', 'date', 'before:end_date'],
             'end_date' => ['required', 'date', 'after:start_date'],
+            'status' => ['required', 'in:active,inactive'],
         ];
 
         if ($periode->code != $request->code) {
@@ -134,6 +150,12 @@ class PeriodController extends Controller
         DB::beginTransaction();
 
         try {
+            if ($validatedData['status'] === 'active') {
+                Period::where('id', '!=', $periode->id)
+                    ->where('status', 'active')
+                    ->update(['status' => 'inactive']);
+            }
+
             $periode->name = $validatedData['name'];
 
             if(isset($validatedData['code'])) {
@@ -142,6 +164,7 @@ class PeriodController extends Controller
 
             $periode->start_date = $validatedData['start_date'];
             $periode->end_date = $validatedData['end_date'];
+            $periode->status = $validatedData['status'];
 
             $periode->save();
             DB::commit();

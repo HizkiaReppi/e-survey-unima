@@ -81,6 +81,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Genap 2023/2024',
             'start_date' => '2024-2-5',
             'end_date' => '2024-6-30',
+            'status' => 'active',
         ]);
 
         $course = Course::factory()->create([

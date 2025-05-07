@@ -42,7 +42,7 @@ class AuthenticatedSessionController extends Controller
         if(Auth::user()->role == 'admin' || Auth::user()->role == 'super-admin'){
             return redirect()->intended(route('dashboard', absolute: false));
         } else if(Auth::user()->role == 'student'){
-            return redirect()->intended(route('dashboard.survey.create', absolute: false));
+            return redirect()->intended(route('dashboard.survey.index', absolute: false));
         } else {
             abort(403);
         }

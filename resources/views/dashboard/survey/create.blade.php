@@ -29,11 +29,11 @@
         </ol>
     </div>
 
-    <form method="POST" action="{{ route('dashboard.survey.store') }}" id="surveyForm">
+    <form method="POST" action="{{ route('dashboard.survey.store', $course->id) }}" id="surveyForm">
         @csrf
 
         <div class="card p-4 mb-4">
-            <h5>Informasi Perkuliahan</h5>
+            <h5>Informasi Perkuliahan {{ $course->name }}</h5>
             <hr class="mb-3" style="margin-top: 0px;">
 
             <div class="mb-3">
@@ -47,20 +47,6 @@
                     @endforeach
                 </select>
                 <x-input-error :messages="$errors->get('lecturer_id')" class="mt-2" />
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Pilih Mata Kuliah <span class="text-danger">*</span></label>
-                <select name="course_id" id="courseSelect" class="form-select" required>
-                    <option value="">-- Pilih Mata Kuliah --</option>
-                    @foreach ($courses as $course)
-                        <option value="{{ $course->id }}" data-credits="{{ $course->credits }}"
-                            {{ old('course_id') == $course->id ? 'selected' : '' }}>
-                            {{ $course->name }}
-                        </option>
-                    @endforeach
-                </select>
-                <x-input-error :messages="$errors->get('course_id')" class="mt-2" />
             </div>
 
             <div class="mb-3">
@@ -117,15 +103,8 @@
             placeholder: "Pilih Dosen",
             allowClear: true
         });
-        
-        $('#courseSelect').select2({
-            theme: 'bootstrap-5',
-            placeholder: "Pilih Mata Kuliah",
-            allowClear: true
-        });
     });
 </script>
-
 
 <script>
     const categories = document.querySelectorAll('.survey-category');
@@ -191,6 +170,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('surveyForm').submit();
+                    localStorage.clear();
                 }
             });
         } else {

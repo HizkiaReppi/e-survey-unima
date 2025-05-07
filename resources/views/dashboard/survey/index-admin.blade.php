@@ -12,8 +12,11 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Mata Kuliah</th>
-                        <th>Status</th>
+                        <th>Nama Responden</th>
+                        <th>Mata Kuliah</th>
+                        <th>Dosen</th>
+                        <th>Rata-rata Nilai Kategori</th>
+                        <th>Rata-rata Hasil</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -27,22 +30,30 @@
             $('#surveyResultsTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('dashboard.survey.index') }}',
+                ajax: '{{ route('dashboard.survey.results.index') }}',
                 columns: [{
                         data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
+                        name: 'DT_RowIndex'
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'respondent_name',
+                        name: 'respondent_name'
                     },
                     {
-                        data: 'status',
-                        name: 'status',
-                        orderable: false,
-                        searchable: false
+                        data: 'course_name',
+                        name: 'course_name'
+                    },
+                    {
+                        data: 'lecturer_name',
+                        name: 'lecturer_name'
+                    },
+                    {
+                        data: 'category_averages',
+                        name: 'category_averages'
+                    },
+                    {
+                        data: 'total_average',
+                        name: 'total_average'
                     },
                     {
                         data: 'action',

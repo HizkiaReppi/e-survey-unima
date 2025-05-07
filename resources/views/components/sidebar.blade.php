@@ -108,7 +108,7 @@
             </li>
         @elsecanany('student')
             <li class="menu-item {{ request()->routeIs('dashboard.survey.*') ? 'active' : '' }}">
-                <a href="{{ route('dashboard.survey.create') }}" class="menu-link">
+                <a href="{{ route('dashboard.survey.index') }}" class="menu-link">
                     <i class='menu-icon tf-icons bx bxs-pencil'></i>
                     <div data-i18n="Survey">Survey</div>
                 </a>

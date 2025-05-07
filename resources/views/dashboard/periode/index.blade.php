@@ -6,8 +6,8 @@
     <div class="card">
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="card-header">Daftar Periode</h5>
-            <button class="btn btn-primary me-4" data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop">Tambah Periode</button>
+            <button class="btn btn-primary me-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Tambah
+                Periode</button>
         </div>
         <div class="table-responsive text-nowrap px-4 pb-4">
             <table class="table" id="table-periode">
@@ -16,6 +16,7 @@
                         <th class="text-center">Nama</th>
                         <th class="text-center">Tanggal Mulai</th>
                         <th class="text-center">Tanggal Berakhir</th>
+                        <th class="text-center">Status</th>
                         <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -38,7 +39,7 @@
                         @csrf
                         <div class="mb-3">
                             <label class="form-label" for="code">Kode Periode <span
-                                style="font-size:14px;color:red">*</span></label>
+                                    style="font-size:14px;color:red">*</span></label>
                             <input type="text" class="form-control {{ $errors->get('code') ? 'border-danger' : '' }}"
                                 id="code" name="code" placeholder="Kode Periode" value="{{ old('code') }}"
                                 autocomplete="code" autofocus required />
@@ -46,7 +47,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="name">Nama Periode <span
-                                style="font-size:14px;color:red">*</span></label>
+                                    style="font-size:14px;color:red">*</span></label>
                             <input type="text" class="form-control {{ $errors->get('name') ? 'border-danger' : '' }}"
                                 id="name" name="name" placeholder="Nama Periode" value="{{ old('name') }}"
                                 autocomplete="name" required />
@@ -54,19 +55,32 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="start_date">Tanggal Mulai <span
-                                style="font-size:14px;color:red">*</span></label>
-                            <input type="date" class="form-control {{ $errors->get('start_date') ? 'border-danger' : '' }}"
-                                id="start_date" name="start_date" placeholder="Nama Periode" value="{{ old('start_date') }}"
-                                autocomplete="name" required />
+                                    style="font-size:14px;color:red">*</span></label>
+                            <input type="date"
+                                class="form-control {{ $errors->get('start_date') ? 'border-danger' : '' }}"
+                                id="start_date" name="start_date" placeholder="Nama Periode"
+                                value="{{ old('start_date') }}" autocomplete="name" required />
                             <x-input-error class="mt-2" :messages="$errors->get('start_date')" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="end_date">Tanggal Berakhir <span
-                                style="font-size:14px;color:red">*</span></label>
-                            <input type="date" class="form-control {{ $errors->get('end_date') ? 'border-danger' : '' }}"
+                                    style="font-size:14px;color:red">*</span></label>
+                            <input type="date"
+                                class="form-control {{ $errors->get('end_date') ? 'border-danger' : '' }}"
                                 id="end_date" name="end_date" placeholder="Nama Periode" value="{{ old('end_date') }}"
                                 autocomplete="name" required />
                             <x-input-error class="mt-2" :messages="$errors->get('end_date')" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="status">Status <span
+                                    style="font-size:14px;color:red">*</span></label>
+                            <select id="status" name="status"
+                                class="form-select {{ $errors->get('status') ? 'border-danger' : '' }}" required>
+                                <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Aktif</option>
+                                <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>
+                                    Tidak Aktif</option>
+                            </select>
+                            <x-input-error class="mt-2" :messages="$errors->get('status')" />
                         </div>
                     </form>
                 </div>
@@ -93,35 +107,49 @@
                         @method('put')
                         <div class="mb-3">
                             <label class="form-label" for="edit-code">Kode Periode <span
-                                style="font-size:14px;color:red">*</span></label>
-                            <input type="text" class="form-control {{ $errors->get('code') ? 'border-danger' : '' }}"
-                                id="edit-code" name="code" placeholder="Nama Periode" value="{{ old('code') }}"
+                                    style="font-size:14px;color:red">*</span></label>
+                            <input type="text"
+                                class="form-control {{ $errors->get('code') ? 'border-danger' : '' }}" id="edit-code"
+                                name="code" placeholder="Nama Periode" value="{{ old('code') }}"
                                 autocomplete="code" autofocus required />
                             <x-input-error class="mt-2" :messages="$errors->get('code')" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="edit-name">Nama Periode <span
-                                style="font-size:14px;color:red">*</span></label>
-                            <input type="text" class="form-control {{ $errors->get('name') ? 'border-danger' : '' }}"
-                                id="edit-name" name="name" placeholder="Nama Periode" value="{{ old('name') }}"
+                                    style="font-size:14px;color:red">*</span></label>
+                            <input type="text"
+                                class="form-control {{ $errors->get('name') ? 'border-danger' : '' }}" id="edit-name"
+                                name="name" placeholder="Nama Periode" value="{{ old('name') }}"
                                 autocomplete="name" required />
                             <x-input-error class="mt-2" :messages="$errors->get('name')" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="edit-start_date">Tanggal Mulai <span
-                                style="font-size:14px;color:red">*</span></label>
-                            <input type="date" class="form-control {{ $errors->get('start_date') ? 'border-danger' : '' }}"
-                                id="edit-start_date" name="start_date" placeholder="Nama Periode" value="{{ old('start_date') }}"
-                                autocomplete="name" required />
+                                    style="font-size:14px;color:red">*</span></label>
+                            <input type="date"
+                                class="form-control {{ $errors->get('start_date') ? 'border-danger' : '' }}"
+                                id="edit-start_date" name="start_date" placeholder="Nama Periode"
+                                value="{{ old('start_date') }}" autocomplete="name" required />
                             <x-input-error class="mt-2" :messages="$errors->get('start_date')" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="edit-end_date">Tanggal Berakhir <span
-                                style="font-size:14px;color:red">*</span></label>
-                            <input type="date" class="form-control {{ $errors->get('end_date') ? 'border-danger' : '' }}"
-                                id="edit-end_date" name="end_date" placeholder="Nama Periode" value="{{ old('end_date') }}"
-                                autocomplete="name" required />
+                                    style="font-size:14px;color:red">*</span></label>
+                            <input type="date"
+                                class="form-control {{ $errors->get('end_date') ? 'border-danger' : '' }}"
+                                id="edit-end_date" name="end_date" placeholder="Nama Periode"
+                                value="{{ old('end_date') }}" autocomplete="name" required />
                             <x-input-error class="mt-2" :messages="$errors->get('end_date')" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="edit-status">Status <span
+                                    style="font-size:14px;color:red">*</span></label>
+                            <select id="edit-status" name="status"
+                                class="form-select {{ $errors->get('status') ? 'border-danger' : '' }}" required>
+                                <option value="active">Aktif</option>
+                                <option value="inactive">Tidak Aktif</option>
+                            </select>
+                            <x-input-error class="mt-2" :messages="$errors->get('status')" />
                         </div>
                     </form>
                 </div>
@@ -154,6 +182,11 @@
                         className: 'text-center'
                     },
                     {
+                        data: 'status',
+                        name: 'status',
+                        className: 'text-center'
+                    },
+                    {
                         data: 'action',
                         name: 'action',
                         orderable: false,
@@ -173,12 +206,14 @@
                 const name = $(this).data('name');
                 const startDate = $(this).data('start');
                 const endDate = $(this).data('end');
+                const status = $(this).data('status');
 
                 $('#edit-id').val(id);
                 $('#edit-code').val(code);
                 $('#edit-name').val(name);
                 $('#edit-start_date').val(startDate);
                 $('#edit-end_date').val(endDate);
+                $('#edit-status').val(status);
 
                 let formAction = "{{ route('dashboard.periode.update', ':id') }}";
                 formAction = formAction.replace(':id', id);

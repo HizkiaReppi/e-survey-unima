@@ -72,12 +72,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('dashboard.survey.')
         ->controller(SurveyController::class)
         ->group(function () {
-            Route::get('/create', 'create')->name('create');
-            Route::post('/', 'store')->name('store');
-            Route::get('/thankyou', 'thankyou')->name('thankyou');
-            Route::get('/results/admin', 'index')->name('results.index');
-            Route::get('results/details/{id}', 'show')->name('result.show');
-            Route::delete('results/admin/delete/{id}', 'delete')->name('result.destroy');
+            Route::get('/', 'index')->name('index');
+            Route::get('/{slug}/create', 'create')->name('create');
+            Route::post('/{slug}', 'store')->name('store');
+            Route::get('/{slug}/thankyou', 'thankyou')->name('thankyou');
+            Route::get('/results/admin', 'index_admin')->name('results.index');
+            Route::get('results/details/{id}/{courseId}', 'show')->name('result.show');
+            Route::delete('results/admin/delete/{id}/{courseId}', 'delete')->name('result.destroy');
         });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

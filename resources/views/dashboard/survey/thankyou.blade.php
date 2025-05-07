@@ -5,5 +5,5 @@
         Terima kasih telah mengisi survey. Jawaban Anda sangat berharga untuk peningkatan mutu pendidikan!
     </div>
 
-    <a href="{{ route('dashboard.survey.result.show', $id) }}" class="btn btn-primary">Lihat Jawaban</a>
+    <a href="{{ route('dashboard.survey.result.show', [$id, $courseId]) }}" class="btn btn-primary">Lihat Jawaban</a>
 </x-dashboard-layout>

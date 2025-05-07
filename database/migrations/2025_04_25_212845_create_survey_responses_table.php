@@ -17,8 +17,6 @@ return new class extends Migration
             $table->foreignUlid('question_id')->constrained()->cascadeOnDelete();
             $table->unsignedTinyInteger('score');
             $table->timestamps();
-
-            $table->unique(['user_id', 'question_id']);
         });
     }
 

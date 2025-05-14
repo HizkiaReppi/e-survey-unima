@@ -107,6 +107,7 @@
 </script>
 
 <script>
+    const questions = document.querySelectorAll('.label-question');
     const categories = document.querySelectorAll('.survey-category');
     const btnNext = document.getElementById('btnNext');
     const btnBack = document.getElementById('btnBack');
@@ -121,7 +122,7 @@
         const answeredQuestions = [...categories].reduce((acc, category) => acc + category.querySelectorAll(
             'input[type="radio"]:checked').length, 0);
 
-        questionIndicator.textContent = `Pertanyaan yang dijawab: ${answeredQuestions} dari ${total}`;
+        questionIndicator.textContent = `Pertanyaan yang dijawab: ${answeredQuestions} dari ${questions.length}`;
     }
 
     function showCategory(index) {

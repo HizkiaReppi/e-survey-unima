@@ -174,13 +174,14 @@ class SurveyController extends Controller
         $alreadySubmitted = SurveyResponse::where('user_id', auth()->id())
             ->where('course_id', $id)
             ->exists();
+
+        $course = Course::where('id', $id)->first();
         if ($alreadySubmitted) {
-            return redirect()->route('dashboard.survey.thankyou');
+            return redirect()->route('dashboard.survey.thankyou', $course->id);
         }
 
         $categories = Category::with('questions')->get();
         $lecturers = Lecturer::all();
-        $course = Course::where('id', $id)->first();
         return view('dashboard.survey.create', compact('categories', 'lecturers', 'course'));
     }
 
@@ -210,7 +211,7 @@ class SurveyController extends Controller
             ->exists();
 
         if ($alreadySubmitted) {
-            return redirect()->route('dashboard.survey.thankyou');
+            return redirect()->route('dashboard.survey.thankyou', $course->id);
         }
 
         // ✅ Simpan berdasarkan kombinasi user + question + course + lecturer
@@ -231,7 +232,7 @@ class SurveyController extends Controller
 
         session()->flash('success', 'Hasil survey berhasil disimpan.');
 
-        return redirect()->route('dashboard.survey.thankyou');
+        return redirect()->route('dashboard.survey.thankyou', $course->id);
     }
 
     public function thankyou(string $courseId)

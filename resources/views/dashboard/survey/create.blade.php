@@ -121,7 +121,7 @@
         const answeredQuestions = [...categories].reduce((acc, category) => acc + category.querySelectorAll(
             'input[type="radio"]:checked').length, 0);
 
-        questionIndicator.textContent = `Pertanyaan yang dijawab: ${answeredQuestions} dari ${totalQuestions}`;
+        questionIndicator.textContent = `Pertanyaan yang dijawab: ${answeredQuestions} dari ${total}`;
     }
 
     function showCategory(index) {
